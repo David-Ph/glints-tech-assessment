@@ -3,24 +3,29 @@
 ## How to install
 
 `npm install`
+will install all dependencies
 
-## How to run app locally
+### How to run app locally
 
 `npm run dev`
+to run app at http://localhost:3000
 
-## How to run test
+### How to run test
 
 `npm run test`
 
-## How to seed items
+### How to seed items
 
 `npm run seed:dev`
 
-## How to clear database
+### How to clear database
 
 `npm run seed:dev:remove`
 
-## Requirements:
+### Unit Test Result
+![unit test](https://i.imgur.com/NeZVFbe.png)
+
+### Requirements:
 
     * ✔️ Use any database you're comfortable
     * ✔️ Use any library or framework you're comfortable
