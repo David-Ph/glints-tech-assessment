@@ -18,8 +18,8 @@ class HistoryController {
       if (req.params.id) query.item = req.params.id;
 
       // sorting
-      const sortField = req.query.sort_by || "created_at";
-      const orderBy = req.query.order_by || "desc";
+      const sortField = req.query.sortBy || "created_at";
+      const orderBy = req.query.orderBy || "desc";
 
       // pagination
       const page = req.query.page;

@@ -20,8 +20,8 @@ class ItemController {
       if (req.query.category) query.category = req.query.category;
 
       // sorting
-      const sortField = req.query.sort_by || "created_at";
-      const orderBy = req.query.order_by || "desc";
+      const sortField = req.query.sortBy || "created_at";
+      const orderBy = req.query.orderBy || "desc";
 
       // pagination
       const page = req.query.page;
@@ -82,10 +82,6 @@ class ItemController {
         { new: true }
       );
 
-      if (!data) {
-        return next({ message: "Item not found", statusCode: 404 });
-      }
-
       res.status(201).json({ data });
     } catch (error) {
       next(error);
@@ -108,7 +104,7 @@ class ItemController {
     try {
       const data = await Item.findOneAndDelete({ _id: req.params.id });
 
-      if (data.nModified === 0) {
+      if (!data) {
         return next({ statusCode: 404, message: "Item not found" });
       }
 

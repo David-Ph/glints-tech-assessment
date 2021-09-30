@@ -20,14 +20,15 @@ router.post("/", ItemValidator.create, ItemController.createItem);
 router.put("/:id", ItemValidator.update, ItemController.updateItem);
 router.put(
   "/updateStock/:id",
+  ItemValidator.get,
   ItemValidator.updateStock,
   ItemController.updateStock
 );
 
-router.delete("/:id", ItemController.deleteItem);
+router.delete("/:id", ItemValidator.get, ItemController.deleteItem);
 
 router.get("/history", HistoryController.getHistories);
-router.get("/history/:id", HistoryController.getHistories);
+router.get("/history/:id", ItemValidator.get, HistoryController.getHistories);
 // ? export router
 //////////////////
 module.exports = router;

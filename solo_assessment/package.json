@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "NODE_ENV=test jest --testTimeout=60000 --coverage --forceExit",
     "dev": "NODE_ENV=development node app.js",
-    "nodemon": "NODE_ENV=development nodemon app.js"
+    "nodemon": "NODE_ENV=development nodemon app.js",
+    "seed:dev": "NODE_ENV=development node seeders add",
+    "seed:dev:remove": "NODE_ENV=development node seeders remove",
+    "seed:test": "NODE_ENV=test node seeders add",
+    "seed:test:remove": "NODE_ENV=test node seeders remove"
   },
   "keywords": [],
   "author": "",
