@@ -18,6 +18,10 @@ const itemSchema = new mongoose.Schema(
       min: 0,
       required: [true, "Price can't be empty"],
     },
+    category: {
+      type: String,
+      required: [true, "Category can't be empty"],
+    },
   },
   {
     timestamps: {
@@ -26,9 +30,6 @@ const itemSchema = new mongoose.Schema(
     },
     toJSON: {
       versionKey: false,
-      transform: function (doc, ret) {
-        delete ret._id;
-      },
     },
   }
 );

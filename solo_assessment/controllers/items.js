@@ -15,6 +15,20 @@ class ItemController {
     }
   }
 
+  async getOneItem(req, res, next) {
+    try {
+      const data = await Item.findOne({ _id: req.params.id });
+
+      if (!data) {
+        return next({ message: "No items found", statusCode: 404 });
+      }
+
+      res.status(200).json({ data });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async createItem(req, res, next) {
     try {
       const data = await Item.create(req.body);
