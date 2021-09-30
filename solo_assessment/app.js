@@ -71,6 +71,9 @@ app.use(hpp());
 
 // ? set routes
 // /////////////
+app.get("/", (req, res, next) => {
+  res.redirect("/items");
+});
 app.use("/items", itemRouter);
 
 app.all("*", async (req, res, next) => {
