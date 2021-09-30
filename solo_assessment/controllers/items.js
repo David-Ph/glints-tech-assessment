@@ -3,13 +3,46 @@ const { Item } = require("../models");
 class ItemController {
   async getItems(req, res, next) {
     try {
-      const data = await Item.find();
+      // price filter
+      const priceMin = parseInt(req.query.priceMin) || 0;
+      const priceMax = parseInt(req.query.priceMax) || 1000000000;
+
+      // stock filter
+      const stockMin = parseInt(req.query.stockMin) || 0;
+      const stockMax = parseInt(req.query.stockMax) || 100000;
+
+      const query = {
+        price: { $gte: priceMin, $lte: priceMax },
+        stock: { $gte: stockMin, $lte: stockMax },
+      };
+
+      // category filter
+      if (req.query.category) query.category = req.query.category;
+      console.log(req.params.category);
+      console.log(query);
+
+      // sorting
+      const sortField = req.query.sort_by || "created_at";
+      const orderBy = req.query.order_by || "desc";
+
+      // pagination
+      const page = req.query.page;
+      const limit = parseInt(req.query.limit) || 5;
+      const skipCount = page > 0 ? (page - 1) * limit : 0;
+
+      // find data
+      const data = await Item.find(query)
+        .sort({ [sortField]: orderBy })
+        .limit(limit)
+        .skip(skipCount);
+
+      const count = await Item.count(query);
 
       if (data.length === 0) {
         return next({ message: "No items found", statusCode: 404 });
       }
 
-      res.status(200).json({ data });
+      res.status(200).json({ data, count });
     } catch (error) {
       next(error);
     }

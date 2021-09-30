@@ -10,7 +10,7 @@
             * update specific item information DONE
             * delete specific DONE
             * manage stock in and stock out DONE
-            * show history stock in and stock out
+            * show history stock in and stock out DONE
         * Each item should have this information:
             * Name, stock, price, category DONE
         * Clean documentation how to install and run your app
@@ -19,6 +19,6 @@
         * Plus point if you can:
             * Implement Unit Test
             * Deploy to make it live and share the link
-            * Implement filter and sorting for API:
+            * Implement filter and sorting for API: DONE
                 * show all item
                 * show history stock in and stock out

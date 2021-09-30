@@ -27,7 +27,7 @@ router.put(
 router.delete("/:id", ItemController.deleteItem);
 
 router.get("/history", HistoryController.getHistories);
-router.get("/history/:id", HistoryController.getHistoryByItem);
+router.get("/history/:id", HistoryController.getHistories);
 // ? export router
 //////////////////
 module.exports = router;
