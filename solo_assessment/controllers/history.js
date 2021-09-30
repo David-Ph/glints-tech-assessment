@@ -4,8 +4,15 @@ class HistoryController {
   async getHistories(req, res, next) {
     try {
       // filter by date
+      const dateMin = req.query.dateMin || new Date("1970-01-01");
+      const dateMax = req.query.dateMax || new Date("2036-12-31");
 
-      const query = {};
+      const query = {
+        created_at: {
+          $gte: dateMin,
+          $lte: dateMax,
+        },
+      };
 
       // get specific item histories
       if (req.params.id) query.item = req.params.id;
