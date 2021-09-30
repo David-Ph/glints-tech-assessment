@@ -2,3 +2,4 @@ solo_assessment/node_modules
 solo_assessment/package-lock.json
 solo_assessment/.env.development
 solo_assessment/.env.test
+solo_assessment/coverage
