@@ -18,8 +18,6 @@ class ItemController {
 
       // category filter
       if (req.query.category) query.category = req.query.category;
-      console.log(req.params.category);
-      console.log(query);
 
       // sorting
       const sortField = req.query.sort_by || "created_at";

@@ -23,7 +23,7 @@ class HistoryController {
 
       // pagination
       const page = req.query.page;
-      const limit = parseInt(req.query.limit) || 15;
+      const limit = parseInt(req.query.limit) || 5;
       const skipCount = page > 0 ? (page - 1) * limit : 0;
 
       const data = await History.find(query)
