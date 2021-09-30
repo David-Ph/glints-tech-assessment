@@ -12,3 +12,4 @@ const uri = mongoose
   .catch((err) => console.log(err));
 
 exports.Item = require("./item");
+exports.History = require("./history");

@@ -61,6 +61,18 @@ class ItemController {
     }
   }
 
+  async updateStock(req, res, next) {
+    try {
+      const data = await Item.findOneAndUpdate(
+        { _id: req.params.id },
+        { stock: req.body.stock },
+        { new: true }
+      );
+
+      res.status(201).json({ data });
+    } catch (error) {}
+  }
+
   async deleteItem(req, res, next) {
     try {
       const data = await Item.findOneAndDelete({ _id: req.params.id });

@@ -9,7 +9,7 @@
             * show detail item DONE
             * update specific item information DONE
             * delete specific DONE
-            * manage stock in and stock out
+            * manage stock in and stock out DONE
             * show history stock in and stock out
         * Each item should have this information:
             * Name, stock, price, category DONE

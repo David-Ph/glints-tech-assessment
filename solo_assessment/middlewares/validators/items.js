@@ -4,8 +4,10 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 class ItemValidator {
-  async create(req, rex, next) {
+  async create(req, res, next) {
     try {
+      // if req.body.field is null/undefined, assign it an empty string
+      // this is simply to avoid validator error: expected a string but received an undefied
       req.body.name = req.body.name ?? "";
       req.body.price = req.body.price ?? "";
       req.body.stock = req.body.stock ?? "";
@@ -25,13 +27,22 @@ class ItemValidator {
         errorMessages.push("Item name can only contains alphabets and numbers");
       }
 
-      if (!validator.isInt(req.body.stock, { min: 0 })) {
+      if (!validator.isInt(req.body.stock.toString(), { min: 0 })) {
         errorMessages.push("Item stock has to be positive integer");
       }
 
-      if (!validator.isInt(req.body.price, { min: 0 })) {
+      if (!validator.isInt(req.body.price.toString(), { min: 0 })) {
         errorMessages.push("Item price has to be positive integer");
       }
+
+      if (!itemCategory.includes(req.body.category)) {
+        errorMessages.push("Invalid item category");
+      }
+
+      // Initialize previousStock as req.body.stock
+      // this will also prevent malicious user from directly
+      // inputting previousStock and create inconsistencies
+      req.body.previousStock = req.body.stock;
 
       if (errorMessages.length > 0) {
         return next({ statusCode: 400, messages: errorMessages });
@@ -42,7 +53,7 @@ class ItemValidator {
     }
   }
 
-  async get(req, rex, next) {
+  async get(req, res, next) {
     try {
       if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return next({ message: "id is not valid", statusCode: 400 });
@@ -54,9 +65,12 @@ class ItemValidator {
     }
   }
 
-  async update(req, rex, next) {
+  async update(req, res, next) {
     try {
       const findItem = await Item.findOne({ _id: req.params.id });
+      if (!findItem) {
+        return next({ statusCode: 404, message: "Item not found" });
+      }
       req.body.name = req.body.name || findItem.name;
       req.body.stock = req.body.stock || findItem.stock;
       req.body.price = req.body.price || findItem.price;
@@ -84,9 +98,45 @@ class ItemValidator {
         errorMessages.push("Item price has to be positive integer");
       }
 
+      if (!itemCategory.includes(req.body.category)) {
+        errorMessages.push("Invalid item category");
+      }
+
       if (errorMessages.length > 0) {
         return next({ statusCode: 400, messages: errorMessages });
       }
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateStock(req, res, next) {
+    try {
+      req.body.stock = req.body.stock || 0;
+
+      const errorMessages = [];
+
+      if (!validator.isInt(req.body.stock.toString())) {
+        errorMessages.push("Please enter an integer");
+      }
+
+      const findItem = await Item.findOne({ _id: req.params.id });
+      if (!findItem) {
+        return next({ statusCode: 404, message: "Item not found" });
+      }
+      // get new stock by adding previous stock and modified stock
+      req.body.stock = parseInt(findItem.stock) + parseInt(req.body.stock);
+
+      // new stock shouldn't be less than 0
+      if (req.body.stock < 0) {
+        errorMessages.push("Not enough stock!");
+      }
+
+      if (errorMessages.length > 0) {
+        return next({ statusCode: 400, messages: errorMessages });
+      }
+
       next();
     } catch (error) {
       next(error);
