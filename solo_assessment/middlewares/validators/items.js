@@ -63,6 +63,18 @@ class ItemValidator {
         }
       }
 
+      if (req.query.dateMin) {
+        if (!validator.isDate(req.query.dateMin)) {
+          errorMessages.push("Please enter proper date for dateMin query");
+        }
+      }
+
+      if (req.query.dateMax) {
+        if (!validator.isDate(req.query.dateMax)) {
+          errorMessages.push("Please enter proper date for dateMin query");
+        }
+      }
+
       if (req.query.limit) {
         if (!validator.isInt(req.query.limit)) {
           errorMessages.push("Please enter proper number for limit query");
@@ -87,14 +99,16 @@ class ItemValidator {
 
   async update(req, res, next) {
     try {
+      // find item first and fill it to missing req.body
+      // this is to avoid user not sending a field when updating
       const findItem = await Item.findOne({ _id: req.params.id });
       if (!findItem) {
         return next({ statusCode: 404, message: "Item not found" });
       }
-      req.body.name = req.body.name || findItem.name;
-      req.body.stock = req.body.stock || findItem.stock;
-      req.body.price = req.body.price || findItem.price;
-      req.body.category = req.body.category || findItem.category;
+      req.body.name = req.body.name ?? findItem.name;
+      req.body.stock = req.body.stock ?? findItem.stock;
+      req.body.price = req.body.price ?? findItem.price;
+      req.body.category = req.body.category ?? findItem.category;
 
       const errorMessages = [];
 

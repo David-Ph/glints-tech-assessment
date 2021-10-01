@@ -17,7 +17,12 @@ router.get("/detail/:id", ItemValidator.get, ItemController.getOneItem);
 
 router.post("/", ItemValidator.create, ItemController.createItem);
 
-router.put("/:id", ItemValidator.update, ItemController.updateItem);
+router.put(
+  "/:id",
+  ItemValidator.get,
+  ItemValidator.update,
+  ItemController.updateItem
+);
 router.put(
   "/updateStock/:id",
   ItemValidator.get,
