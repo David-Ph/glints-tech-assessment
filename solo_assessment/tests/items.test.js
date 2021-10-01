@@ -53,6 +53,15 @@ describe("GET /items", () => {
     expect(response.body).toBeInstanceOf(Object);
   });
 
+  it("Get items with invalid queries", async () => {
+    const response = await request(app).get("/items?page=asd&limit=asd");
+
+    console.log(response.text);
+
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toBeInstanceOf(Object);
+  });
+
   it("Get items should not be found", async () => {
     const response = await request(app).get(
       "/items?page=20&limit=50&stockMin=10&stockMax=200&priceMin=100&priceMax=1000&category=drinks&sortBy=created_at&orderBy=desc"
@@ -71,6 +80,8 @@ describe("GET /items", () => {
 
   it("Get item detail invalid item id", async () => {
     const response = await request(app).get(`/items/detail/qwe`);
+
+    console.log(response.text);
 
     expect(response.statusCode).toEqual(400);
     expect(response.body).toBeInstanceOf(Object);

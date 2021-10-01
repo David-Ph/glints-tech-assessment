@@ -12,7 +12,7 @@ const ItemValidator = require("../middlewares/validators/items");
 
 // ? set routers
 // //////////////
-router.get("/", ItemController.getItems);
+router.get("/", ItemValidator.get, ItemController.getItems);
 router.get("/detail/:id", ItemValidator.get, ItemController.getOneItem);
 
 router.post("/", ItemValidator.create, ItemController.createItem);
@@ -27,7 +27,7 @@ router.put(
 
 router.delete("/:id", ItemValidator.get, ItemController.deleteItem);
 
-router.get("/history", HistoryController.getHistories);
+router.get("/history", ItemValidator.get, HistoryController.getHistories);
 router.get("/history/:id", ItemValidator.get, HistoryController.getHistories);
 // ? export router
 //////////////////

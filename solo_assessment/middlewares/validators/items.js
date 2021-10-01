@@ -55,8 +55,28 @@ class ItemValidator {
 
   async get(req, res, next) {
     try {
-      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return next({ message: "id is not valid", statusCode: 400 });
+      const errorMessages = [];
+
+      if (req.params.id) {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+          errorMessages.push("Please enter valid id");
+        }
+      }
+
+      if (req.query.limit) {
+        if (!validator.isInt(req.query.limit)) {
+          errorMessages.push("Please enter proper number for limit query");
+        }
+      }
+
+      if (req.query.page) {
+        if (!validator.isInt(req.query.page)) {
+          errorMessages.push("Please enter proper number for page query");
+        }
+      }
+
+      if (errorMessages.length > 0) {
+        return next({ statusCode: 400, messages: errorMessages });
       }
 
       next();
