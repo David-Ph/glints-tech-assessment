@@ -64,10 +64,6 @@ class ItemController {
     try {
       const data = await Item.create(req.body);
 
-      const findItem = await Item.find({
-        _id: data._id,
-      });
-
       res.status(201).json({ data });
     } catch (error) {
       next(error);

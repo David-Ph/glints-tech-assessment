@@ -35,9 +35,12 @@ class ItemValidator {
         errorMessages.push("Item price has to be positive integer");
       }
 
-      if (!itemCategory.includes(req.body.category)) {
+      if (!itemCategory.includes(req.body.category.toLowerCase())) {
         errorMessages.push("Invalid item category");
       }
+
+      // make sure that category is inserted in database as lowercase
+      req.body.category = req.body.category.toLowerCase();
 
       // Initialize previousStock as req.body.stock
       // this will also prevent malicious user from directly
@@ -65,13 +68,17 @@ class ItemValidator {
 
       if (req.query.dateMin) {
         if (!validator.isDate(req.query.dateMin)) {
-          errorMessages.push("Please enter proper date for dateMin query");
+          errorMessages.push(
+            "Please enter proper date for dateMin query in YYYY-MM-DD format"
+          );
         }
       }
 
       if (req.query.dateMax) {
         if (!validator.isDate(req.query.dateMax)) {
-          errorMessages.push("Please enter proper date for dateMin query");
+          errorMessages.push(
+            "Please enter proper date for dateMin query in YYYY-MM-DD"
+          );
         }
       }
 
@@ -132,9 +139,12 @@ class ItemValidator {
         errorMessages.push("Item price has to be positive integer");
       }
 
-      if (!itemCategory.includes(req.body.category)) {
-        errorMessages.push("Invalid item category");
+      if (!itemCategory.includes(req.body.category.toLowerCase())) {
+        errorMessages.push("Invalid item category.");
       }
+
+      // make sure that category is inserted in database as lowercase
+      req.body.category = req.body.category.toLowerCase();
 
       if (errorMessages.length > 0) {
         return next({ statusCode: 400, messages: errorMessages });
